@@ -10,15 +10,18 @@ def driver(request):
     options = Options()
     options.add_argument('--window-size=1920,1080')
 
-    # Пока локальный запуск, позже добавим Selenoid
     driver = webdriver.Chrome(options=options)
 
-    # Базовый URL
+    # Устанавливаем неявное ожидание (ждём элементы до 20 секунд)
+    driver.implicitly_wait(20)
+
+    # Устанавливаем таймаут загрузки страницы (60 секунд)
+    driver.set_page_load_timeout(60)
+
     base_url = 'https://www.saucedemo.com'
     driver.base_url = base_url
 
     def fin():
-        # Добавляем вложения в Allure
         allure.attach(
             driver.get_screenshot_as_png(),
             name='screenshot',
