@@ -2,6 +2,7 @@ import allure
 import pytest
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
+from models.user import User
 
 
 @allure.epic('UI тестирование')
@@ -14,9 +15,10 @@ class TestLogin:
     def test_valid_login(self, driver):
         login_page = LoginPage(driver)
         inventory_page = InventoryPage(driver)
+        user = User('standard_user', 'secret_sauce')
 
         login_page.open()
-        login_page.login('standard_user', 'secret_sauce')
+        login_page.login(user.username, user.password)
 
         assert driver.current_url == 'https://www.saucedemo.com/inventory.html'
 
@@ -25,9 +27,10 @@ class TestLogin:
     @allure.tag('negative')
     def test_invalid_login_locked_user(self, driver):
         login_page = LoginPage(driver)
+        user = User('locked_out_user', 'secret_sauce')
 
         login_page.open()
-        login_page.login('locked_out_user', 'secret_sauce')
+        login_page.login(user.username, user.password)
 
         login_page.should_have_error('Sorry, this user has been locked out.')
 
@@ -36,8 +39,9 @@ class TestLogin:
     @allure.tag('negative')
     def test_invalid_login_wrong_password(self, driver):
         login_page = LoginPage(driver)
+        user = User('standard_user', 'wrong_password')
 
         login_page.open()
-        login_page.login('standard_user', 'wrong_password')
+        login_page.login(user.username, user.password)
 
         login_page.should_have_error('Username and password do not match any user in this service')
