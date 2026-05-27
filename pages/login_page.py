@@ -1,47 +1,44 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from pages.base_page import BasePage
 import allure
 
 
-class LoginPage:
-    def __init__(self, driver):
-        self.driver = driver
-
+class LoginPage(BasePage):
     # Локаторы
     USERNAME_INPUT = (By.ID, 'user-name')
     PASSWORD_INPUT = (By.ID, 'password')
     LOGIN_BUTTON = (By.ID, 'login-button')
     ERROR_MESSAGE = (By.CSS_SELECTOR, '[data-test="error"]')
 
-    @allure.step('Открыть страницу логина')
+    @allure.step("Открыть страницу логина")
     def open(self):
         self.driver.get(self.driver.base_url)
         return self
 
-    @allure.step('Ввести логин: {username}')
+    @allure.step("Ввести логин: {username}")
     def set_username(self, username: str):
-        self.driver.find_element(*self.USERNAME_INPUT).send_keys(username)
+        self.type(self.USERNAME_INPUT, username)
         return self
 
-    @allure.step('Ввести пароль')
+    @allure.step("Ввести пароль")
     def set_password(self, password: str):
-        self.driver.find_element(*self.PASSWORD_INPUT).send_keys(password)
+        self.type(self.PASSWORD_INPUT, password)
         return self
 
-    @allure.step('Нажать кнопку Login')
+    @allure.step("Нажать кнопку Login")
     def click_login(self):
-        self.driver.find_element(*self.LOGIN_BUTTON).click()
+        self.click(self.LOGIN_BUTTON)
         return self
 
-    @allure.step('Выполнить вход с логином {username} и паролем')
+    @allure.step("Выполнить вход с логином {username}")
     def login(self, username: str, password: str):
         self.set_username(username)
         self.set_password(password)
         self.click_login()
         return self
 
-    @allure.step('Проверить сообщение об ошибке')
+    @allure.step("Проверить сообщение об ошибке")
     def should_have_error(self, expected_text: str):
-        error = self.driver.find_element(*self.ERROR_MESSAGE)
-        assert expected_text in error.text
+        error_text = self.get_text(self.ERROR_MESSAGE)
+        assert expected_text in error_text, f"Ожидалось '{expected_text}', получено '{error_text}'"
         return self
