@@ -1,5 +1,4 @@
 import allure
-from selenium.webdriver.common.by import By
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
@@ -36,15 +35,14 @@ class TestCheckout:
         login_page = LoginPage(driver)
         inventory_page = InventoryPage(driver)
         cart_page = CartPage(driver)
+        checkout_page = CheckoutPage(driver)
 
         login_page.open()
         login_page.login('standard_user', 'secret_sauce')
         inventory_page.open_cart()
         cart_page.click_checkout()
 
-        with allure.step('Проверить сообщение об ошибке'):
-            error = driver.find_element(By.CSS_SELECTOR, '[data-test="error"]')
-            assert 'Cart is empty' in error.text
+        checkout_page.should_have_error_message('Cart is empty')
 
     @allure.story('Отмена оформления')
     @allure.severity(allure.severity_level.MINOR)
@@ -52,6 +50,7 @@ class TestCheckout:
         login_page = LoginPage(driver)
         inventory_page = InventoryPage(driver)
         cart_page = CartPage(driver)
+        checkout_page = CheckoutPage(driver)
 
         login_page.open()
         login_page.login('standard_user', 'secret_sauce')
@@ -59,9 +58,6 @@ class TestCheckout:
         inventory_page.open_cart()
         cart_page.click_checkout()
 
-        with allure.step('Нажать Cancel'):
-            driver.find_element(By.ID, 'cancel').click()
-
-        with allure.step('Проверить, что вернулись в корзину'):
-            assert 'cart.html' in driver.current_url
-            cart_page.should_have_items_count(1)
+        checkout_page.click_cancel()
+        checkout_page.should_be_on_cart_page()
+        cart_page.should_have_items_count(1)

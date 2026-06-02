@@ -10,6 +10,8 @@ class CheckoutPage(BasePage):
     CONTINUE_BUTTON = (By.ID, 'continue')
     FINISH_BUTTON = (By.ID, 'finish')
     COMPLETE_HEADER = (By.CLASS_NAME, 'complete-header')
+    CANCEL_BUTTON = (By.ID, 'cancel')
+    ERROR_MESSAGE = (By.CSS_SELECTOR, '[data-test="error"]')
 
     @allure.step('Заполнить форму оформления')
     def fill_checkout_form(self, first_name: str, last_name: str, postal_code: str):
@@ -32,4 +34,20 @@ class CheckoutPage(BasePage):
     def should_have_success_message(self):
         header = self.find(self.COMPLETE_HEADER)
         assert 'Thank you for your order' in header.text
+        return self
+
+    @allure.step("Нажать Cancel")
+    def click_cancel(self):
+        self.click(self.CANCEL_BUTTON)
+        return self
+
+    @allure.step("Проверить, что на странице корзины")
+    def should_be_on_cart_page(self):
+        assert 'cart.html' in self.driver.current_url
+        return self
+
+    @allure.step("Проверить сообщение об ошибке: {expected_text}")
+    def should_have_error_message(self, expected_text: str):
+        error = self.find(self.ERROR_MESSAGE)
+        assert expected_text in error.text
         return self
