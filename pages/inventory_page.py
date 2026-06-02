@@ -1,11 +1,9 @@
 from selenium.webdriver.common.by import By
+from pages.base_page import BasePage
 import allure
 
 
-class InventoryPage:
-    def __init__(self, driver):
-        self.driver = driver
-
+class InventoryPage(BasePage):
     # Локаторы
     CART_ICON = (By.CLASS_NAME, 'shopping_cart_link')
     PRODUCTS_TITLE = (By.CLASS_NAME, 'title')
@@ -13,17 +11,17 @@ class InventoryPage:
 
     @allure.step('Открыть корзину')
     def open_cart(self):
-        self.driver.find_element(*self.CART_ICON).click()
+        self.click(self.CART_ICON)
         return self
 
     @allure.step('Добавить первый товар в корзину')
     def add_first_item_to_cart(self):
-        self.driver.find_element(*self.ADD_TO_CART_BUTTON).click()
+        self.click(self.ADD_TO_CART_BUTTON)
         return self
 
     @allure.step('Проверить, что страница каталога загружена')
     def should_be_loaded(self):
         assert 'inventory.html' in self.driver.current_url
-        title = self.driver.find_element(*self.PRODUCTS_TITLE)
-        assert title.text == 'Products'
+        title_text = self.get_text(self.PRODUCTS_TITLE)
+        assert title_text == 'Products'
         return self
