@@ -23,7 +23,7 @@ def driver(request):
 
     driver.implicitly_wait(60)
     driver.set_page_load_timeout(120)
-    driver.base_url = os.getenv('BASE_URL', 'https://www.saucedemo.com')
+    driver.base_url = os.getenv('BASE_URL')
 
     yield driver
 
