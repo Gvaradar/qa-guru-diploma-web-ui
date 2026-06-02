@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from dotenv import load_dotenv
-from utils.logger import attach_screenshot, attach_html
+from utils.allure_attachments import attach_screenshot, attach_html
 
 load_dotenv()
 
