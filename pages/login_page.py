@@ -42,3 +42,8 @@ class LoginPage(BasePage):
         error_text = self.get_text(self.ERROR_MESSAGE)
         assert expected_text in error_text, f"Ожидалось '{expected_text}', получено '{error_text}'"
         return self
+
+    @allure.step("Проверить, что открыта страница каталога")
+    def should_be_on_inventory_page(self):
+        assert 'inventory.html' in self.driver.current_url
+        return self

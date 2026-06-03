@@ -19,7 +19,7 @@ class TestLogin:
         login_page.open()
         login_page.login(user.username, user.password)
 
-        assert driver.current_url == 'https://www.saucedemo.com/inventory.html'
+        login_page.should_be_on_inventory_page()
 
     @allure.story('Негативный сценарий')
     @allure.severity(allure.severity_level.NORMAL)
