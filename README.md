@@ -14,6 +14,7 @@
 ## Установка и запуск
 
 ### 1. Клонировать репозиторий
+
 git clone https://github.com/Gvaradar/qa-guru-diploma-web-ui.git
 cd qa-guru-diploma-web-ui
 
@@ -23,7 +24,6 @@ python -m venv venv
 source venv/bin/activate # Linux/Mac
 
 venv\Scripts\activate # Windows
-
 
 ### 3. Установить зависимости
 
@@ -47,17 +47,17 @@ allure serve allure_results
 
 qa-guru-diploma-web-ui/
 
-├── pages/ 
+├── pages/
 
-├── tests/ 
+├── tests/
 
-├── .env 
+├── .env
 
-├── requirements.txt 
+├── requirements.txt
 
-├── pytest.ini 
+├── pytest.ini
 
-└── README.md 
+└── README.md
 
 ## Тестовые сценарии
 

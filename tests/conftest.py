@@ -1,11 +1,12 @@
 import os
-import pytest
+
 import allure
+import pytest
+from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from dotenv import load_dotenv
 
 load_dotenv()
 

@@ -1,4 +1,5 @@
 import allure
+
 from models.user import User
 from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage
